@@ -1,46 +1,31 @@
-(function () {
-    const ITEM_NAME = "brainrot";
-
-    function hasBrainrot() {
-        return player.inventory && player.inventory.includes(ITEM_NAME);
-    }
-
-    function createDupeButton() {
-        if (document.getElementById("dupe-btn")) return;
-
-        const btn = document.createElement("button");
-        btn.id = "dupe-btn";
-        btn.innerText = "DUPE";
-        btn.style.position = "fixed";
-        btn.style.top = "12px";
-        btn.style.right = "12px";
-        btn.style.padding = "10px 14px";
-        btn.style.fontSize = "14px";
-        btn.style.zIndex = "99999";
-        btn.style.borderRadius = "10px";
-        btn.style.border = "none";
-        btn.style.background = "#ff3c3c";
-        btn.style.color = "white";
-        btn.style.fontWeight = "bold";
-
-        btn.onclick = () => {
-            player.addItem(ITEM_NAME, 1);
-            console.log("Brainrot duplicated!");
-        };
-
-        document.body.appendChild(btn);
-    }
-
-    function removeDupeButton() {
-        const btn = document.getElementById("dupe-btn");
-        if (btn) btn.remove();
-    }
-
-    setInterval(() => {
-        if (hasBrainrot()) {
-            createDupeButton();
-        } else {
-            removeDupeButton();
-        }
-    }, 500);
-})();
+local player = game.Players.LocalPlayer
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = player:WaitForChild("PlayerGui")
+local btn = Instance.new("TextButton")
+btn.Size = UDim2.new(0, 100, 0, 50)
+btn.Position = UDim2.new(1, -110, 0, 10)
+btn.Text = "DUPE"
+btn.BackgroundColor3 = Color3.fromRGB(255, 60, 60)
+btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+btn.Font = Enum.Font.SourceSansBold
+btn.TextScaled = true
+btn.Parent = screenGui
+btn.Visible = false
+local function checkBrainrot()
+    if player.Backpack:FindFirstChild("brainrot") or player.Character:FindFirstChild("brainrot") then
+        btn.Visible = true
+    else
+        btn.Visible = false
+    end
+end
+btn.MouseButton1Click:Connect(function()
+    local brainrot = player.Backpack:FindFirstChild("brainrot") or player.Character:FindFirstChild("brainrot")
+    if brainrot then
+        local clone = brainrot:Clone()
+        clone.Parent = player.Backpack
+    end
+end)
+while true do
+    checkBrainrot()
+    wait(0.5)
+end
