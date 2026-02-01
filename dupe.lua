@@ -1,31 +1,22 @@
-local player = game.Players.LocalPlayer
-local screenGui = Instance.new("ScreenGui")
-screenGui.Parent = player:WaitForChild("PlayerGui")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+repeat task.wait() until player:FindFirstChild("PlayerGui")
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "DebugGui"
+gui.ResetOnSpawn = false
+gui.Parent = player.PlayerGui
+
 local btn = Instance.new("TextButton")
-btn.Size = UDim2.new(0, 100, 0, 50)
-btn.Position = UDim2.new(1, -110, 0, 10)
-btn.Text = "DUPE"
-btn.BackgroundColor3 = Color3.fromRGB(255, 60, 60)
+btn.Size = UDim2.new(0, 140, 0, 50)
+btn.Position = UDim2.new(1, -150, 0, 20)
+btn.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 btn.TextColor3 = Color3.fromRGB(255, 255, 255)
-btn.Font = Enum.Font.SourceSansBold
 btn.TextScaled = true
-btn.Parent = screenGui
-btn.Visible = false
-local function checkBrainrot()
-    if player.Backpack:FindFirstChild("brainrot") or player.Character:FindFirstChild("brainrot") then
-        btn.Visible = true
-    else
-        btn.Visible = false
-    end
-end
+btn.Text = "DEBUG BUTTON"
+btn.Parent = gui
+
 btn.MouseButton1Click:Connect(function()
-    local brainrot = player.Backpack:FindFirstChild("brainrot") or player.Character:FindFirstChild("brainrot")
-    if brainrot then
-        local clone = brainrot:Clone()
-        clone.Parent = player.Backpack
-    end
+    print("DEBUG BUTTON CLICKED")
 end)
-while true do
-    checkBrainrot()
-    wait(0.5)
-end
